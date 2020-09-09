@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>My book shelf login</title>
@@ -17,14 +18,18 @@
 </head>
 <body>
 <div id="login_form">
-    <form method="post" th:action="@{/login/auth}" th:object="${loginForm}">
-        <img class="login_item" th:src="@{/images/book_icon.png}">
+    <form method="post" th:action="@{/login/auth}" th:object="${userForm}">
+        <img class="login_item" width="200" height="200"  th:src="@{/images/book_icon.png}">
         <br>
         <input class="login_item" type="text" placeholder="enter username" th:field="*{username}">
         <br>
         <input class="login_item" type="password" placeholder="password" th:field="*{password}">
         <br>
-        <input class="login_item" type="submit" placeholder="login">
+        <input class="login_item" type="submit" placeholder="login" value="Login">
+    </form>
+    <form th:action="@{/registration}" method="get">
+        <input class="login_item" type="submit" value="Registration"
+               name="Submit">
     </form>
 </div>
 </body>

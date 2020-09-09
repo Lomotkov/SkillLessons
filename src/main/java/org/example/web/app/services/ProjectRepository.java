@@ -3,9 +3,9 @@ package org.example.web.app.services;
 import java.util.List;
 
 public interface ProjectRepository<T> {
-    List<T> retriveAll();
+    List<T> retrieveAll();
 
     void store(T book);
 
-    boolean removeItemById(int bookIdToRemove);
+    boolean removeItemById(String bookIdToRemove);
 }

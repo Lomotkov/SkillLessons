@@ -4,7 +4,6 @@ import org.example.web.dto.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -18,14 +17,21 @@ public class BookService {
     }
 
     public List<Book> getAllBooks() {
-        return bookRepo.retriveAll();
+        return bookRepo.retrieveAll();
     }
 
-    public void saveBook(Book book) {
-        bookRepo.store(book);
+    public boolean saveBook(Book book) {
+        if (book.getAuthor().isEmpty()
+                && book.getTitle().isEmpty()
+                && book.getSize() == null) {
+            return false;
+        } else {
+            bookRepo.store(book);
+            return true;
+        }
     }
 
-    public boolean removeBookById(int bookIdToRemove) {
+    public boolean removeBookById(String bookIdToRemove) {
         return bookRepo.removeItemById(bookIdToRemove);
     }
 }

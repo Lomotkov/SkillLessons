@@ -38,19 +38,21 @@ public class BookRepository<T> implements ProjectRepository<Book>, ApplicationCo
 
     @Override
     public boolean removeItemByParameter(final String itemParameterValue, String parameterName) {
-        switch (parameterName) {
-            case "id":
-                repo.removeIf(book -> book.getId().equals(itemParameterValue));
-                return true;
-            case "title":
-                repo.removeIf(book -> book.getTitle().equals(itemParameterValue));
-                return true;
-            case "author":
-                repo.removeIf(book -> book.getAuthor().equals(itemParameterValue));
-                return true;
-            case "size":
-                repo.removeIf(book -> book.getSize() == Integer.parseInt(itemParameterValue));
-                return true;
+        if (!itemParameterValue.isEmpty()) {
+            switch (parameterName) {
+                case "id":
+                    repo.removeIf(book -> book.getId().equals(itemParameterValue));
+                    return true;
+                case "title":
+                    repo.removeIf(book -> book.getTitle().matches(itemParameterValue));
+                    return true;
+                case "author":
+                    repo.removeIf(book -> book.getAuthor().matches(itemParameterValue));
+                    return true;
+                case "size":
+                    repo.removeIf(book -> book.getSize() == Integer.parseInt(itemParameterValue));
+                    return true;
+            }
         }
         return false;
     }

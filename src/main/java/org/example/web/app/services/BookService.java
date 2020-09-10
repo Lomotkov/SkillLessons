@@ -32,6 +32,21 @@ public class BookService {
     }
 
     public boolean removeBookById(String bookIdToRemove) {
-        return bookRepo.removeItemById(bookIdToRemove);
+        return bookRepo.removeItemByParameter(bookIdToRemove, "id");
     }
+
+    public boolean removeBooksByTitle(String title) {
+       return bookRepo.removeItemByParameter(title, "title");
+    }
+
+    public boolean removeBooksByAuthor(String author) {
+        return bookRepo.removeItemByParameter(author, "author");
+
+    }
+
+    public boolean removeBooksBySize(String size) {
+        return bookRepo.removeItemByParameter(size, "size");
+
+    }
+
 }

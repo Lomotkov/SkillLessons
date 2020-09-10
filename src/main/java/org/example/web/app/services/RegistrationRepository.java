@@ -31,14 +31,15 @@ public class RegistrationRepository implements ProjectRepository<UserForm> {
         }
     }
 
-    @Override
-    public boolean removeItemById(String loginIdToRemove) {
-        return false;
-    }
 
     public boolean checkAuth(UserForm userForm) {
         UserForm userToLogin = repo.get(userForm.getUsername());
         return userToLogin != null
                 && userToLogin.getPassword().equals(userForm.getPassword());
+    }
+
+    @Override
+    public boolean removeItemByParameter(String itemParameterValue, String parameterName) {
+        return false;
     }
 }

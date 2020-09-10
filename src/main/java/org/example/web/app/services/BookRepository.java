@@ -30,19 +30,28 @@ public class BookRepository<T> implements ProjectRepository<Book>, ApplicationCo
         logger.info("store new book " + book);
     }
 
-    @Override
-    public boolean removeItemById(String bookIdToRemove) {
-        for (Book book : repo) {
-            if (book.getId().equals(bookIdToRemove)) {
-                repo.remove(book);
-                return true;
-            }
-        }
-        return false;
-    }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.context = applicationContext;
+    }
+
+    @Override
+    public boolean removeItemByParameter(final String itemParameterValue, String parameterName) {
+        switch (parameterName) {
+            case "id":
+                repo.removeIf(book -> book.getId().equals(itemParameterValue));
+                return true;
+            case "title":
+                repo.removeIf(book -> book.getTitle().equals(itemParameterValue));
+                return true;
+            case "author":
+                repo.removeIf(book -> book.getAuthor().equals(itemParameterValue));
+                return true;
+            case "size":
+                repo.removeIf(book -> book.getSize() == Integer.parseInt(itemParameterValue));
+                return true;
+        }
+        return false;
     }
 }

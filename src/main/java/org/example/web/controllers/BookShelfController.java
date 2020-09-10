@@ -68,6 +68,30 @@ public class BookShelfController {
         }
     }
 
+    @PostMapping("/remove/author")
+    public String removeBooksByAuthor(@RequestParam(value = "bookAuthor") String bookAuthor) {
+        if (bookService.removeBooksByAuthor(bookAuthor)) {
+            logger.info("Deleted book with author = " + bookAuthor);
+        }
+        return "redirect:/books/shelf";
+    }
+
+    @PostMapping("/remove/title")
+    public String removeBooksByTitle(@RequestParam(value = "bookTitle") String bookTitle) {
+        if (bookService.removeBooksByTitle(bookTitle)) {
+            logger.info("Deleted book with title = " + bookTitle);
+        }
+        return "redirect:/books/shelf";
+    }
+
+    @PostMapping("/remove/size")
+    public String removeBookBySize(@RequestParam(value = "bookSize") String bookSize) {
+        if (bookService.removeBooksBySize(bookSize)) {
+            logger.info("Deleted book with Size = " + bookSize);
+        }
+        return "redirect:/books/shelf";
+    }
+
     @PostMapping("/uploadFile")
     public String uploadFile(@RequestParam("file") MultipartFile file) throws Exception {
         String name = file.getOriginalFilename();

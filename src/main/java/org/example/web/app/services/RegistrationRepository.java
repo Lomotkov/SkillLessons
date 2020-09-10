@@ -42,4 +42,9 @@ public class RegistrationRepository implements ProjectRepository<UserForm> {
     public boolean removeItemByParameter(String itemParameterValue, String parameterName) {
         return false;
     }
+
+    @Override
+    public List<UserForm> getAllItemsBySearchParam(String searchParam) {
+        return null;
+    }
 }

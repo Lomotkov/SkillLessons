@@ -72,4 +72,11 @@ public class BookShelfController {
         }
         return "redirect:/books/shelf";
     }
+
+    @PostMapping("/shelf/search")
+    public String searchBook(Model model, @RequestParam(value = "searchParam") String searchParam) {
+        model.addAttribute("book", new Book());
+        model.addAttribute("booksList", bookService.searchBooks(searchParam));
+        return "book_shelf";
+    }
 }

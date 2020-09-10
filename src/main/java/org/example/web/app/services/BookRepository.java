@@ -50,10 +50,27 @@ public class BookRepository<T> implements ProjectRepository<Book>, ApplicationCo
                     repo.removeIf(book -> book.getAuthor().matches(itemParameterValue));
                     return true;
                 case "size":
-                    repo.removeIf(book -> book.getSize() == Integer.parseInt(itemParameterValue));
+                    repo.removeIf(book -> String.valueOf(book.getSize()).matches(itemParameterValue));
                     return true;
             }
         }
         return false;
+    }
+
+    @Override
+    public List<Book> getAllItemsBySearchParam(String searchParam) {
+        List<Book> searchedBooks = new ArrayList<>();
+        if(searchParam.isEmpty()) {
+           return repo;
+        }
+            for (Book book : repo) {
+                if (book.getId().matches(searchParam)
+                        || book.getTitle().matches(searchParam)
+                        || book.getAuthor().matches(searchParam)
+                        || String.valueOf(book.getSize()).matches(searchParam)) {
+                    searchedBooks.add(book);
+                }
+            }
+        return searchedBooks;
     }
 }

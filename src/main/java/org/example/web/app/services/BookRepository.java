@@ -20,13 +20,13 @@ public class BookRepository<T> implements ProjectRepository<Book> {
 
     @Override
     public void store(Book book) {
-        book.setId(book.hashCode());
+        book.setId(String.valueOf(book.hashCode()));
         repo.add(book);
         logger.info("store new book " + book);
     }
 
     @Override
-    public boolean removeItemById(int bookIdToRemove) {
+    public boolean removeItemById(String bookIdToRemove) {
         for (Book book : repo) {
             if(book.getId().equals(bookIdToRemove)) {
                 repo.remove(book);

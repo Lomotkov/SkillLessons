@@ -3,13 +3,13 @@ package org.example.web.dto;
 import javax.validation.constraints.Digits;
 
 public class Book {
-    private String id;
+    private Integer id;
     private String author;
     private String title;
     @Digits(integer = 4, fraction = 0)
     private Integer size;
 
-    public Book(String id, String author, String title, Integer size) {
+    public Book(Integer id, String author, String title, Integer size) {
         this.id = id;
         this.author = author;
         this.title = title;
@@ -19,11 +19,11 @@ public class Book {
     public Book() {
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -47,7 +47,7 @@
                     <input type="submit" placeholder="save" value="Save">
                 </td>
                 <td th:if="${#fields.hasErrors()}">
-                    <p>field must be 4 or more digit value</p>
+                    <p>field must be 4 or more digit value, author and title can't be more then 100 characters</p>
                 </td>
             </tr>
         </table>
@@ -60,7 +60,7 @@
                 <input type="text" placeholder="id number" th:field="*{id}">
             </td>
             <td>
-                <input type="submit" placeholder="remove" >
+                <input type="submit" placeholder="remove">
             </td>
             <td th:if="${#fields.hasErrors()}">
                 <p>Wrong id or not found</p>
@@ -77,6 +77,9 @@
                     </td>
                     <td>
                         <input type="submit" value="Upload"/>
+                    </td>
+                    <td>
+                    <p th:text="${errorMessage}"></p>
                     </td>
                 </tr>
             </table>

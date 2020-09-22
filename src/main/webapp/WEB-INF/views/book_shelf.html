@@ -53,7 +53,7 @@
         </table>
         </form>
 
-        <form method="post" th:action="@{/books/remove}" th:object="${bookIdToRemove}">
+        <form method="post" th:action="@{/books/remove/id}" th:object="${bookIdToRemove}">
     <table>
         <tr>
             <td>
@@ -69,6 +69,42 @@
     </table>
         </form>
 
+        <form method="post" th:action="@{/books/remove/author}">
+            <table>
+                <tr>
+                    <td>
+                        <input type="text" placeholder="author" th:name="bookAuthor" required>
+                    </td>
+                    <td>
+                        <input type="submit" placeholder="remove" value="remove">
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <form method="post" th:action="@{/books/remove/title}">
+            <table>
+                <tr>
+                    <td>
+                        <input type="text" placeholder="title" th:name="bookTitle" required>
+                    </td>
+                    <td>
+                        <input type="submit" placeholder="remove" value="remove">
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <form method="post" th:action="@{/books/remove/size}">
+            <table>
+                <tr>
+                    <td>
+                        <input type="text" placeholder="size" th:name="bookSize" required>
+                    </td>
+                    <td>
+                        <input type="submit" placeholder="remove" value="remove">
+                    </td>
+                </tr>
+            </table>
+        </form>
         <form method="post" th:action="@{/books/uploadFile}" enctype="multipart/form-data">
             <table>
                 <tr>
@@ -79,9 +115,11 @@
                         <input type="submit" value="Upload"/>
                     </td>
                     <td>
-                    <p th:text="${errorMessage}"></p>
+                        <p th:text="${errorMessage}"></p>
                     </td>
                 </tr>
+            </table>
+            </tr>
             </table>
         </form>
     <table id="books">

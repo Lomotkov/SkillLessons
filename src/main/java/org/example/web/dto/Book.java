@@ -1,13 +1,13 @@
 package org.example.web.dto;
 
 import javax.validation.constraints.Digits;
-import javax.validation.constraints.Max;
+import javax.validation.constraints.Size;
 
 public class Book {
     private Integer id;
-    @Max(value = 100)
+    @Size(max = 100)
     private String author;
-    @Max(value = 100)
+    @Size(max = 100)
     private String title;
     @Digits(integer = 4, fraction = 0)
     private Integer size;

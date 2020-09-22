@@ -32,7 +32,7 @@ public class BookRepository<T> implements ProjectRepository<Book>, ApplicationCo
     }
 
     @Override
-    public List<Book> retreiveAll() {
+    public List<Book> retrieveAll() {
         List<Book> books = jdbcTemplate.query("SELECT * FROM books", (ResultSet rs, int rowNum) -> {
             Book book = new Book();
             book.setId(rs.getInt("id"));
@@ -55,10 +55,10 @@ public class BookRepository<T> implements ProjectRepository<Book>, ApplicationCo
     }
 
     @Override
-    public boolean removeItemById(Integer bookIdToRemove) {
+    public boolean removeItemByParameter(final String itemParameterValue, String parameterName) {
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-        parameterSource.addValue("id", bookIdToRemove);
-        jdbcTemplate.update("DELETE FROM books WHERE id = :id", parameterSource);
+        parameterSource.addValue(parameterName, itemParameterValue);
+        jdbcTemplate.update("DELETE FROM books WHERE  " + parameterName + " REGEXP :" + parameterName, parameterSource);
         return true;
     }
 }

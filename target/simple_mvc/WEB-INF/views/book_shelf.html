@@ -122,6 +122,18 @@
             </tr>
             </table>
         </form>
+        <form method="post" th:action="@{/books/shelf/search}">
+            <table>
+                <tr>
+                    <td>
+                        <input type="text" style="width: 300px;" placeholder="search param" th:name="searchParam">
+                    </td>
+                    <td>
+                        <input type="submit" placeholder="search" value="search">
+                    </td>
+                </tr>
+            </table>
+        </form>
     <table id="books">
         <tr>
             <th>id</th>

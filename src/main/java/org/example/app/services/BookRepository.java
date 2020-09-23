@@ -61,4 +61,22 @@ public class BookRepository<T> implements ProjectRepository<Book>, ApplicationCo
         jdbcTemplate.update("DELETE FROM books WHERE  " + parameterName + " REGEXP :" + parameterName, parameterSource);
         return true;
     }
+
+    @Override
+    public List<Book> getAllItemsBySearchParam(String searchParam) {
+        if (searchParam.isEmpty()) {
+            return retrieveAll();
+        }
+        return jdbcTemplate.query("SELECT * FROM books WHERE author REGEXP \'" + searchParam + "\'" +
+                " OR title REGEXP \'" + searchParam + "\'" +
+                " OR size REGEXP \'" + searchParam + "\'" +
+                " OR id REGEXP \'" + searchParam + "\'", (ResultSet rs, int rowNum) -> {
+            Book book = new Book();
+            book.setId(rs.getInt("id"));
+            book.setAuthor(rs.getString("author"));
+            book.setTitle(rs.getString("title"));
+            book.setSize(rs.getInt("size"));
+            return book;
+        });
+    }
 }

@@ -69,23 +69,6 @@
     </table>
         </form>
 
-        <form method="post" th:action="@{/books/uploadFile}" enctype="multipart/form-data">
-            <table>
-                <tr>
-                    <td>
-                        <input type="file" name="file"/>
-                    </td>
-                    <td>
-                        <input type="submit" value="Upload"/>
-                    </td>
-                    <td>
-                    <p th:text="${errorMessage}"></p>
-                    </td>
-                </tr>
-            </table>
-        </tr>
-    </table>
-        </form>
         <form method="post" th:action="@{/books/remove/author}">
             <table>
                 <tr>
@@ -120,6 +103,23 @@
                         <input type="submit" placeholder="remove" value="remove">
                     </td>
                 </tr>
+            </table>
+        </form>
+        <form method="post" th:action="@{/books/uploadFile}" enctype="multipart/form-data">
+            <table>
+                <tr>
+                    <td>
+                        <input type="file" name="file"/>
+                    </td>
+                    <td>
+                        <input type="submit" value="Upload"/>
+                    </td>
+                    <td>
+                        <p th:text="${errorMessage}"></p>
+                    </td>
+                </tr>
+            </table>
+            </tr>
             </table>
         </form>
     <table id="books">

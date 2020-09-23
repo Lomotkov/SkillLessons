@@ -134,6 +134,15 @@
                 </tr>
             </table>
         </form>
+        <form th:action="@{/books/downloadFile}" th:object="${selectedFile}" th:method="get">
+        <select th:field="*{name}" size="3" style="width: 300px;" required>
+            <option th:each="fileName : ${fileNamesList}"
+                    th:value="${fileName}"
+                    th:text="${fileName}">
+            </option>
+        </select>
+            <input type="submit"/>
+        </form>
     <table id="books">
         <tr>
             <th>id</th>

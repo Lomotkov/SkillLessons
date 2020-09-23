@@ -1,24 +1,28 @@
 package org.example.web.controllers;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.example.app.exeptions.BookShelfLoginException;
+import org.example.app.exeptions.FileDownloadException;
 import org.example.app.exeptions.FileUploadException;
 import org.example.app.services.BookService;
+import org.example.app.services.FileService;
 import org.example.web.dto.Book;
 import org.example.web.dto.BookIdToRemove;
+import org.example.web.dto.FileName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.*;
 
 @Controller
 @RequestMapping(value = "/books")
@@ -27,10 +31,12 @@ public class BookShelfController {
 
     private Logger logger = Logger.getLogger(BookShelfController.class);
     private BookService bookService;
+    private FileService fileService;
 
     @Autowired
-    public BookShelfController(BookService bookService) {
+    public BookShelfController(BookService bookService, FileService fileService) {
         this.bookService = bookService;
+        this.fileService = fileService;
     }
 
     @GetMapping("/shelf")
@@ -39,6 +45,8 @@ public class BookShelfController {
         model.addAttribute("book", new Book());
         model.addAttribute("bookIdToRemove", new BookIdToRemove());
         model.addAttribute("booksList", bookService.getAllBooks());
+        model.addAttribute("fileNamesList",fileService.getAllFilesNameFromServer());
+        model.addAttribute("selectedFile", new FileName());
         return "book_shelf";
     }
 
@@ -94,34 +102,39 @@ public class BookShelfController {
 
     @PostMapping("/uploadFile")
     public String uploadFile(@RequestParam("file") MultipartFile file) throws Exception {
-        String name = file.getOriginalFilename();
-        if(name.isEmpty()) {
-            throw new FileUploadException("no file selected");
-        }
-        byte[] bytes = file.getBytes();
-        //create dir
-        String rootPath = System.getProperty("catalina.home");
-        File dir = new File(rootPath + File.separator + "external_uploads");
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-        //create file
-        File serverFile = new File(dir.getAbsolutePath() + File.separator + name);
-        try (BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile))) {
-            stream.write(bytes);
-        } catch (Exception e) {
-            logger.info(e.getMessage());
-        }
-        logger.info("new file saved at: " + serverFile.getAbsolutePath());
+        fileService.uploadFileToServer(file);
         return "redirect:/books/shelf";
     }
 
-    @ExceptionHandler(FileUploadException.class)
+    @GetMapping(value = "/downloadFile", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public @ResponseBody byte[] downloadFile(@ModelAttribute("selectedFile") FileName fileName, HttpServletResponse response) throws Exception {
+        if(fileName.getName()!=null) {
+            response.setHeader(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename=" + fileName.getName());
+            return fileService.downloadFileFromServer(fileName.getName());
+        } else {
+            throw new FileDownloadException("No file selected for download");
+        }
+    }
+
+    @ExceptionHandler({FileDownloadException.class})
+    public String handleErrorDownload(Model model, FileDownloadException exception) {
+        model.addAttribute("errorMessage", exception.getMessage());
+        model.addAttribute("book", new Book());
+        model.addAttribute("bookIdToRemove", new BookIdToRemove());
+        model.addAttribute("booksList", bookService.getAllBooks());
+        model.addAttribute("fileNamesList",fileService.getAllFilesNameFromServer());
+        model.addAttribute("selectedFile", new FileName());
+        return "book_shelf";
+    }
+
+    @ExceptionHandler({FileUploadException.class})
     public String handleError(Model model, FileUploadException exception) {
         model.addAttribute("errorMessage", exception.getMessage());
         model.addAttribute("book", new Book());
         model.addAttribute("bookIdToRemove", new BookIdToRemove());
         model.addAttribute("booksList", bookService.getAllBooks());
+        model.addAttribute("fileNamesList",fileService.getAllFilesNameFromServer());
+        model.addAttribute("selectedFile", new FileName());
         return "book_shelf";
     }
 }

@@ -2,6 +2,7 @@ package org.example.app.services;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+import org.example.app.exeptions.FileDownloadException;
 import org.example.app.exeptions.FileUploadException;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +20,7 @@ public class FileRepository {
 
     public void uploadFile(MultipartFile file) throws Exception {
         String name = file.getOriginalFilename();
-        if(name.isEmpty()) {
+        if (name.isEmpty()) {
             throw new FileUploadException("no file selected");
         }
         byte[] bytes = file.getBytes();
@@ -39,13 +40,17 @@ public class FileRepository {
         logger.info("new file saved at: " + serverFile.getAbsolutePath());
     }
 
-    public byte[] downloadFile(String fileName) {
-        String rootPath = System.getProperty("catalina.home");
-        try(InputStream in = new FileInputStream(new File(rootPath + File.separator + "external_uploads" + File.separator + fileName))) {
-            return IOUtils.toByteArray(in);
-        } catch (IOException ex) {
-            logger.info("File download failed: " + ex.getMessage());
-            return null;
+    public byte[] downloadFile(String fileName) throws FileDownloadException {
+        if (fileName == null) {
+            throw new FileDownloadException("No file selected for download");
+        } else {
+            String rootPath = System.getProperty("catalina.home");
+            try (InputStream in = new FileInputStream(new File(rootPath + File.separator + "external_uploads" + File.separator + fileName))) {
+                return IOUtils.toByteArray(in);
+            } catch (IOException ex) {
+                logger.info("File download failed: " + ex.getMessage());
+                return null;
+            }
         }
     }
 

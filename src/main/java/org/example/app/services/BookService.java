@@ -36,7 +36,7 @@ public class BookService {
     }
 
     public boolean removeBooksByTitle(String title) {
-       return bookRepo.removeItemByParameter(title, "title");
+        return bookRepo.removeItemByParameter(title, "title");
     }
 
     public boolean removeBooksByAuthor(String author) {

@@ -45,7 +45,7 @@ public class BookShelfController {
         model.addAttribute("book", new Book());
         model.addAttribute("bookIdToRemove", new BookIdToRemove());
         model.addAttribute("booksList", bookService.getAllBooks());
-        model.addAttribute("fileNamesList",fileService.getAllFilesNameFromServer());
+        model.addAttribute("fileNamesList", fileService.getAllFilesNameFromServer());
         model.addAttribute("selectedFile", new FileName());
         return "book_shelf";
     }
@@ -107,34 +107,21 @@ public class BookShelfController {
     }
 
     @GetMapping(value = "/downloadFile", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public @ResponseBody byte[] downloadFile(@ModelAttribute("selectedFile") FileName fileName, HttpServletResponse response) throws Exception {
-        if(fileName.getName()!=null) {
-            response.setHeader(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename=" + fileName.getName());
-            return fileService.downloadFileFromServer(fileName.getName());
-        } else {
-            throw new FileDownloadException("No file selected for download");
-        }
+    public @ResponseBody
+    byte[] downloadFile(@ModelAttribute("selectedFile") FileName fileName, HttpServletResponse response) throws Exception {
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileName.getName());
+        return fileService.downloadFileFromServer(fileName.getName());
     }
 
     @ExceptionHandler({FileDownloadException.class})
     public String handleErrorDownload(Model model, FileDownloadException exception) {
         model.addAttribute("errorMessage", exception.getMessage());
-        model.addAttribute("book", new Book());
-        model.addAttribute("bookIdToRemove", new BookIdToRemove());
-        model.addAttribute("booksList", bookService.getAllBooks());
-        model.addAttribute("fileNamesList",fileService.getAllFilesNameFromServer());
-        model.addAttribute("selectedFile", new FileName());
-        return "book_shelf";
+        return books(model);
     }
 
     @ExceptionHandler({FileUploadException.class})
     public String handleError(Model model, FileUploadException exception) {
         model.addAttribute("errorMessage", exception.getMessage());
-        model.addAttribute("book", new Book());
-        model.addAttribute("bookIdToRemove", new BookIdToRemove());
-        model.addAttribute("booksList", bookService.getAllBooks());
-        model.addAttribute("fileNamesList",fileService.getAllFilesNameFromServer());
-        model.addAttribute("selectedFile", new FileName());
-        return "book_shelf";
+        return books(model);
     }
 }

@@ -1,5 +1,6 @@
 package org.example.app.services;
 
+import org.example.app.exeptions.FileDownloadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,7 +24,7 @@ public class FileService {
         return true;
     }
 
-    public byte[] downloadFileFromServer(String fileName) {
+    public byte[] downloadFileFromServer(String fileName) throws FileDownloadException {
         return fileRepository.downloadFile(fileName);
     }
 

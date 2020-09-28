@@ -53,7 +53,6 @@ public class BookShelfController {
     @PostMapping("/save")
     public String saveBook(@Valid Book book, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("book", new Book());
             model.addAttribute("bookIdToRemove", new BookIdToRemove());
             model.addAttribute("booksList", bookService.getAllBooks());
             return "book_shelf";
@@ -130,6 +129,8 @@ public class BookShelfController {
         model.addAttribute("book", new Book());
         model.addAttribute("bookIdToRemove", new BookIdToRemove());
         model.addAttribute("booksList", bookService.searchBooks(searchParam));
+        model.addAttribute("fileNamesList", fileService.getAllFilesNameFromServer());
+        model.addAttribute("selectedFile", new FileName());
         return "book_shelf";
     }
 }

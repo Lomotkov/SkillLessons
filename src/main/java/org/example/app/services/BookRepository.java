@@ -67,10 +67,12 @@ public class BookRepository<T> implements ProjectRepository<Book>, ApplicationCo
         if (searchParam.isEmpty()) {
             return retrieveAll();
         }
-        return jdbcTemplate.query("SELECT * FROM books WHERE author REGEXP \'" + searchParam + "\'" +
-                " OR title REGEXP \'" + searchParam + "\'" +
-                " OR size REGEXP \'" + searchParam + "\'" +
-                " OR id REGEXP \'" + searchParam + "\'", (ResultSet rs, int rowNum) -> {
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+        parameterSource.addValue("param", searchParam);
+        return jdbcTemplate.query("SELECT * FROM books WHERE author REGEXP :param" +
+                " OR title REGEXP :param" +
+                " OR size REGEXP :param" +
+                " OR id REGEXP :param", parameterSource, (ResultSet rs, int rowNum) -> {
             Book book = new Book();
             book.setId(rs.getInt("id"));
             book.setAuthor(rs.getString("author"));

@@ -49,5 +49,7 @@ public class BookService {
 
     }
 
-
+    public List<Book> searchBooks(String searchParam) {
+        return bookRepo.getAllItemsBySearchParam(searchParam);
+    }
 }

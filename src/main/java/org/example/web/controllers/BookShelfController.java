@@ -124,4 +124,12 @@ public class BookShelfController {
         model.addAttribute("errorMessage", exception.getMessage());
         return books(model);
     }
+
+    @PostMapping("/shelf/search")
+    public String searchBook(Model model, @RequestParam(value = "searchParam") String searchParam) {
+        model.addAttribute("book", new Book());
+        model.addAttribute("bookIdToRemove", new BookIdToRemove());
+        model.addAttribute("booksList", bookService.searchBooks(searchParam));
+        return "book_shelf";
+    }
 }

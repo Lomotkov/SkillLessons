@@ -122,6 +122,27 @@
             </tr>
             </table>
         </form>
+        <form method="post" th:action="@{/books/shelf/search}">
+            <table>
+                <tr>
+                    <td>
+                        <input type="text" style="width: 300px;" placeholder="search param" th:name="searchParam">
+                    </td>
+                    <td>
+                        <input type="submit" placeholder="search" value="search">
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <form th:action="@{/books/downloadFile}" th:object="${selectedFile}" th:method="get">
+        <select th:field="*{name}" size="3" style="width: 300px;" required>
+            <option th:each="fileName : ${fileNamesList}"
+                    th:value="${fileName}"
+                    th:text="${fileName}">
+            </option>
+        </select>
+            <input type="submit"/>
+        </form>
     <table id="books">
         <tr>
             <th>id</th>

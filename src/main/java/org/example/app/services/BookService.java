@@ -21,14 +21,8 @@ public class BookService {
     }
 
     public boolean saveBook(Book book) {
-        if (book.getAuthor().isEmpty()
-                && book.getTitle().isEmpty()
-                && book.getSize() == null) {
-            return false;
-        } else {
             bookRepo.store(book);
             return true;
-        }
     }
 
     public boolean removeBookById(String bookIdToRemove) {
